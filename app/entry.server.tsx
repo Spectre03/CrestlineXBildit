@@ -3,6 +3,7 @@ import {RemixServer} from '@remix-run/react';
 import isbot from 'isbot';
 import {renderToReadableStream} from 'react-dom/server';
 import {createContentSecurityPolicy} from '@shopify/hydrogen';
+import {allowBilditIframeEmbedding, bilditCspDirectives} from '@bildit-platform/hydrogen';
 
 export default async function handleRequest(
   request: Request,
@@ -23,6 +24,32 @@ export default async function handleRequest(
       'https://www.google-analytics.com',
       'https://www.googletagmanager.com',
       ...(process.env.NODE_ENV !== 'production' ? ['http://localhost:*'] : []),
+      ...bilditCspDirectives.scriptSrc,
+    ],
+    imgSrc: [
+      'self',
+      'data:',
+      'https://cdn.shopify.com',
+      'https://images.unsplash.com',
+      'https://plus.unsplash.com',
+      'https://images.pexels.com',
+      ...bilditCspDirectives.imgSrc,
+    ],
+    styleSrc: [
+      'self',
+      'unsafe-inline',
+      'https://fonts.googleapis.com',
+    ],
+    fontSrc: [
+      'self',
+      'https://fonts.gstatic.com',
+    ],
+    connectSrc: [
+      'self',
+      'https://cdn.shopify.com',
+      'https://monorail-edge.shopifysvc.com',
+      ...(process.env.NODE_ENV !== 'production' ? ['http://localhost:*', 'ws://localhost:*'] : []),
+      ...bilditCspDirectives.connectSrc,
     ],
   });
 
@@ -46,7 +73,7 @@ export default async function handleRequest(
   }
 
   responseHeaders.set('Content-Type', 'text/html');
-  responseHeaders.set('Content-Security-Policy', header);
+  responseHeaders.set('Content-Security-Policy', allowBilditIframeEmbedding(header));
   return new Response(body, {
     headers: responseHeaders,
     status: responseStatusCode,

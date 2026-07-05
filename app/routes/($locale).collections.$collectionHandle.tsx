@@ -149,35 +149,41 @@ export default function Collection() {
 
   return (
     <>
-      <PageHeader heading={collection.title}>
-        {collection?.description && (
-          <div className="flex items-baseline justify-between w-full">
-            <div>
-              <Text format width="narrow" as="p" className="inline-block">
-                {collection.description}
-              </Text>
-            </div>
-          </div>
+      {/* Premium hero banner */}
+      <div className="relative h-[40vh] flex items-end overflow-hidden bg-black -mt-nav">
+        {collection.image ? (
+          <img
+            src={collection.image.url}
+            alt={collection.title}
+            className="absolute inset-0 w-full h-full object-cover opacity-60"
+          />
+        ) : (
+          <img
+            src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1920&q=85"
+            alt={collection.title}
+            className="absolute inset-0 w-full h-full object-cover opacity-60"
+          />
         )}
-      </PageHeader>
-      <Section>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
+        <div className="relative z-10 px-8 md:px-16 pb-12">
+          <p className="text-white/50 text-[10px] uppercase tracking-[0.4em] mb-3">Collection</p>
+          <h1 className="font-serif text-white text-5xl md:text-6xl font-bold">{collection.title}</h1>
+          {collection.description && (
+            <p className="text-white/60 text-sm font-light mt-3 max-w-md leading-relaxed">{collection.description}</p>
+          )}
+        </div>
+      </div>
+
+      <div className="px-6 md:px-12 py-12">
         <SortFilter
           filters={collection.products.filters as Filter[]}
           appliedFilters={appliedFilters}
           collections={collections}
         >
           <Pagination connection={collection.products}>
-            {({
-              nodes,
-              isLoading,
-              PreviousLink,
-              NextLink,
-              nextPageUrl,
-              hasNextPage,
-              state,
-            }) => (
+            {({nodes, isLoading, PreviousLink, NextLink, nextPageUrl, hasNextPage, state}) => (
               <>
-                <div className="flex items-center justify-center mb-6">
+                <div className="flex items-center justify-center mb-8">
                   <Button as={PreviousLink} variant="secondary" width="full">
                     {isLoading ? 'Loading...' : 'Load previous'}
                   </Button>
@@ -189,28 +195,19 @@ export default function Collection() {
                   hasNextPage={hasNextPage}
                   state={state}
                 />
-                <div className="flex items-center justify-center mt-6">
-                  <Button
-                    ref={ref}
-                    as={NextLink}
-                    variant="secondary"
-                    width="full"
-                  >
-                    {isLoading ? 'Loading...' : 'Load more products'}
+                <div className="flex items-center justify-center mt-8">
+                  <Button ref={ref} as={NextLink} variant="secondary" width="full">
+                    {isLoading ? 'Loading...' : 'Load more'}
                   </Button>
                 </div>
               </>
             )}
           </Pagination>
         </SortFilter>
-      </Section>
+      </div>
+
       <Analytics.CollectionView
-        data={{
-          collection: {
-            id: collection.id,
-            handle: collection.handle,
-          },
-        }}
+        data={{collection: {id: collection.id, handle: collection.handle}}}
       />
     </>
   );

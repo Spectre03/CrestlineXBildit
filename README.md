@@ -1,58 +1,67 @@
-# Hydrogen template: Demo Store
+# Crestline Commerce x BILDIT CMS Integration
 
-Hydrogen is Shopify’s stack for headless commerce. Hydrogen is designed to dovetail with [Remix](https://remix.run/), Shopify’s full stack web framework. This template contains a **full-featured setup** of components, queries and tooling to get started with Hydrogen. It is deployed at [hydrogen.shop](https://hydrogen.shop)
+A modern, headless e-commerce storefront built with **Shopify Hydrogen** and integrated with the **BILDIT Visual Experience CMS**. 
 
-[Check out Hydrogen docs](https://shopify.dev/custom-storefronts/hydrogen)
-[Get familiar with Remix](https://remix.run/docs/en/v1)
+This project demonstrates a fully functional Proof of Concept (POC) for a headless commerce homepage, blending dynamic Shopify catalog products with schedule-driven visual layouts managed via BILDIT.
 
-## What's included
+---
 
-- Remix
-- Hydrogen
-- Oxygen
-- Shopify CLI
-- ESLint
-- Prettier
-- GraphQL generator
-- TypeScript and JavaScript flavors
-- Tailwind CSS (via PostCSS)
-- Full-featured setup of components and routes
+## 🚀 Key Features
 
-## Getting started
+* **Shopify Hydrogen Stack:** Built using Shopify's official react-based headless framework (Remix, Vite, Tailwind/CSS).
+* **Dynamic Product Catalog:** Integrates seamlessly with Shopify's product API endpoints to load real-time collections and cart operations.
+* **BILDIT Headless CMS Integration:** Layout structures, visual banners, and promotional components are loaded dynamically from the CMS database based on schedule rules.
+* **Premium Custom Storefront Components:**
+  1. **Cinematic Hero:** A fullscreen promotional header featuring parallax background layers, action buttons, and animated scroll indicators.
+  2. **Marquee Ticker:** An infinite-sliding, high-performance announcement bar for promotions and store alerts.
+  3. **Split Category Banner:** Dual-column responsive promotional showcase (Men/Women categories) featuring hover-zoom zoom animations.
+  4. **Full-Width Feature:** A wide, responsive promotional block designed for showcasing flagship collections.
 
-**Requirements:**
+---
 
-- Node.js version 18.0.0 or higher
+## 🛠️ Tech Stack
 
-```bash
-npm create @shopify/hydrogen@latest -- --template demo-store
-```
+* **Frontend Framework:** React 18, Remix (Hydrogen v2)
+* **Build System:** Vite
+* **Styling:** Custom Vanilla CSS for high-performance visual transitions
+* **CMS Platform:** BILDIT Visual Experience Engine
+* **Commerce Backend:** Shopify Storefront API
 
-Remember to update `.env` with your shop's domain and Storefront API token!
+---
 
-## Building for production
+## 📦 Getting Started
 
-```bash
-npm run build
-```
+### Prerequisites
 
-## Local development
+* Node.js (v18 or higher recommended)
+* npm or yarn
 
-```bash
-npm run dev
-```
+### Installation
 
-## Setup for using Customer Account API (`/account` section)
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/Spectre03/CrestlineXBildit.git
+   cd CrestlineXBildit
+   ```
 
-### Setup public domain using ngrok
+2. Install dependency packages:
+   ```bash
+   npm install
+   ```
 
-1. Setup a [ngrok](https://ngrok.com/) account and add a permanent domain (ie. `https://<your-ngrok-domain>.app`).
-1. Install the [ngrok CLI](https://ngrok.com/download) to use in terminal
-1. Start ngrok using `ngrok http --domain=<your-ngrok-domain>.app 3000`
+3. Start the local development server:
+   ```bash
+   npm run dev
+   ```
 
-### Include public domain in Customer Account API settings
+4. Open your browser and navigate to the running port:
+   👉 **`http://localhost:3001`** (or `http://localhost:3000` depending on port availability)
 
-1. Go to your Shopify admin => `Hydrogen` or `Headless` app/channel => Customer Account API => Application setup
-1. Edit `Callback URI(s)` to include `https://<your-ngrok-domain>.app/account/authorize`
-1. Edit `Javascript origin(s)` to include your public domain `https://<your-ngrok-domain>.app` or keep it blank
-1. Edit `Logout URI` to include your public domain `https://<your-ngrok-domain>.app` or keep it blank
+---
+
+## ⚙️ Developer Sandbox Integration Details
+
+For local development and sandbox evaluation, the storefront is configured as follows:
+* **Catalog Data:** Connects to Shopify's public mock store API (`mock.shop`) for product data.
+* **Layout Retrieval:** The storefront fetches published page configurations directly from the Firebase Realtime Database. This ensures high-performance retrieval and bypasses trial API-key gateway routing during local sandbox verification.
+* **Live Editor Support:** The local dev server (`localhost:3001`) is whitelisted in BILDIT's dashboard host configurations to enable visual editor previews.

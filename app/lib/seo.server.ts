@@ -30,8 +30,8 @@ function root({
   url: Request['url'];
 }): SeoConfig {
   return {
-    title: shop?.name,
-    titleTemplate: '%s | Hydrogen Demo Store',
+    title: 'Crestline Commerce',
+    titleTemplate: '%s | Crestline Commerce',
     description: truncate(shop?.description ?? ''),
     handle: '@shopify',
     url,
@@ -64,7 +64,7 @@ function root({
 function home({url}: {url: Request['url']}): SeoConfig {
   return {
     title: 'Home',
-    titleTemplate: '%s | Hydrogen Demo Store',
+    titleTemplate: '%s | Crestline Commerce',
     description: 'The best place to buy snowboarding products',
     url,
     robots: {

@@ -46,17 +46,17 @@ export function ProductCard({
   }
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-3 group">
       <Link
         onClick={onClick}
         to={`/products/${product.handle}`}
         prefetch="viewport"
       >
         <div className={clsx('grid gap-4', className)}>
-          <div className="card-image aspect-[4/5] bg-primary/5">
+          <div className="card-image aspect-[4/5] bg-primary/5 overflow-hidden">
             {image && (
               <Image
-                className="object-cover w-full fadeIn"
+                className="object-cover w-full fadeIn transition-transform duration-700 group-hover:scale-105"
                 sizes="(min-width: 64em) 25vw, (min-width: 48em) 30vw, 45vw"
                 aspectRatio="4/5"
                 data={image}
@@ -64,17 +64,19 @@ export function ProductCard({
                 loading={loading}
               />
             )}
-            <Text
-              as="label"
-              size="fine"
-              className="absolute top-0 right-0 m-4 text-right text-notice"
-            >
-              {cardLabel}
-            </Text>
+            {cardLabel && (
+              <Text
+                as="label"
+                size="fine"
+                className="absolute top-0 left-0 m-3 px-2 py-1 bg-primary text-contrast text-[10px] uppercase tracking-widest font-medium"
+              >
+                {cardLabel}
+              </Text>
+            )}
           </div>
-          <div className="grid gap-1">
+          <div className="grid gap-1 px-1">
             <Text
-              className="w-full overflow-hidden whitespace-nowrap text-ellipsis "
+              className="w-full overflow-hidden whitespace-nowrap text-ellipsis font-medium tracking-wide text-sm uppercase"
               as="h3"
             >
               {product.title}

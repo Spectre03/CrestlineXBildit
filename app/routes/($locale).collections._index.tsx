@@ -54,20 +54,30 @@ export default function Collections() {
 
   return (
     <>
-      <PageHeader heading="Collections" />
-      <Section>
+      {/* Hero banner */}
+      <div className="relative h-[40vh] flex items-end overflow-hidden bg-black -mt-nav">
+        <img
+          src="https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=1920&q=85"
+          alt="Collections"
+          className="absolute inset-0 w-full h-full object-cover opacity-60"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
+        <div className="relative z-10 px-8 md:px-16 pb-12">
+          <p className="text-white/50 text-[10px] uppercase tracking-[0.4em] mb-3">Browse</p>
+          <h1 className="font-serif text-white text-5xl md:text-6xl font-bold">Our Collections</h1>
+        </div>
+      </div>
+
+      <div className="px-6 md:px-12 py-16">
         <Pagination connection={collections}>
           {({nodes, isLoading, PreviousLink, NextLink}) => (
             <>
-              <div className="flex items-center justify-center mb-6">
+              <div className="flex items-center justify-center mb-8">
                 <Button as={PreviousLink} variant="secondary" width="full">
-                  {isLoading ? 'Loading...' : 'Previous collections'}
+                  {isLoading ? 'Loading...' : 'Previous'}
                 </Button>
               </div>
-              <Grid
-                items={nodes.length === 3 ? 3 : 2}
-                data-test="collection-grid"
-              >
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {nodes.map((collection, i) => (
                   <CollectionCard
                     collection={collection as Collection}
@@ -75,16 +85,16 @@ export default function Collections() {
                     loading={getImageLoadingPriority(i, 2)}
                   />
                 ))}
-              </Grid>
-              <div className="flex items-center justify-center mt-6">
+              </div>
+              <div className="flex items-center justify-center mt-8">
                 <Button as={NextLink} variant="secondary" width="full">
-                  {isLoading ? 'Loading...' : 'Next collections'}
+                  {isLoading ? 'Loading...' : 'Next'}
                 </Button>
               </div>
             </>
           )}
         </Pagination>
-      </Section>
+      </div>
     </>
   );
 }
@@ -100,21 +110,28 @@ function CollectionCard({
     <Link
       prefetch="viewport"
       to={`/collections/${collection.handle}`}
-      className="grid gap-4"
+      className="relative overflow-hidden group aspect-[3/2] block"
     >
-      <div className="card-image bg-primary/5 aspect-[3/2]">
+      <div className="absolute inset-0 bg-primary/10">
         {collection?.image && (
           <Image
             data={collection.image}
-            aspectRatio="6/4"
+            aspectRatio="3/2"
             sizes="(max-width: 32em) 100vw, 45vw"
             loading={loading}
+            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
           />
         )}
       </div>
-      <Heading as="h3" size="copy">
-        {collection.title}
-      </Heading>
+      <div className="absolute inset-0 bg-black/30 group-hover:bg-black/50 transition-all duration-500" />
+      <div className="absolute bottom-0 left-0 p-8">
+        <Heading as="h3" size="copy" className="text-white font-serif text-2xl font-bold tracking-wide">
+          {collection.title}
+        </Heading>
+        <span className="text-white/60 text-[10px] uppercase tracking-widest mt-2 block opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          Shop Now →
+        </span>
+      </div>
     </Link>
   );
 }
