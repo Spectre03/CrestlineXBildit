@@ -3,6 +3,7 @@ import {hydrogen} from '@shopify/hydrogen/vite';
 import {oxygen} from '@shopify/mini-oxygen/vite';
 import {vitePlugin as remix} from '@remix-run/dev';
 import tsconfigPaths from 'vite-tsconfig-paths';
+import path from 'path';
 
 export default defineConfig({
   plugins: [
@@ -19,9 +20,20 @@ export default defineConfig({
     }),
     tsconfigPaths(),
   ],
+  resolve: {
+    alias: {
+      'react-router': path.resolve(__dirname, './react-router-mock.js'),
+    },
+  },
   ssr: {
+    noExternal: [/@bildit-platform/, 'react-is'],
     optimizeDeps: {
-      include: ['typographic-base'],
+      include: [
+        'typographic-base',
+        'react-is',
+        '@bildit-platform/react-core',
+        '@bildit-platform/hydrogen',
+      ],
     },
   },
   optimizeDeps: {
@@ -33,6 +45,9 @@ export default defineConfig({
       'react-use/esm/useScroll',
       'react-use/esm/useDebounce',
       'react-use/esm/useWindowScroll',
+      'react-is',
+      '@bildit-platform/react-core',
+      '@bildit-platform/hydrogen',
     ],
   },
   build: {

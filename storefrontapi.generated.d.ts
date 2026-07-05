@@ -742,9 +742,6 @@ export type ArticleDetailsQuery = {
             'id' | 'altText' | 'url' | 'width' | 'height'
           >
         >;
-        seo?: StorefrontAPI.Maybe<
-          Pick<StorefrontAPI.Seo, 'description' | 'title'>
-        >;
       }
     >;
   }>;
@@ -754,45 +751,23 @@ export type BlogQueryVariables = StorefrontAPI.Exact<{
   language?: StorefrontAPI.InputMaybe<StorefrontAPI.LanguageCode>;
   blogHandle: StorefrontAPI.Scalars['String']['input'];
   pageBy: StorefrontAPI.Scalars['Int']['input'];
-  cursor?: StorefrontAPI.InputMaybe<StorefrontAPI.Scalars['String']['input']>;
 }>;
 
 export type BlogQuery = {
-  blog?: StorefrontAPI.Maybe<
-    Pick<StorefrontAPI.Blog, 'title'> & {
-      seo?: StorefrontAPI.Maybe<
-        Pick<StorefrontAPI.Seo, 'title' | 'description'>
-      >;
-      articles: {
-        edges: Array<{
-          node: Pick<
-            StorefrontAPI.Article,
-            'contentHtml' | 'handle' | 'id' | 'publishedAt' | 'title'
-          > & {
-            author?: StorefrontAPI.Maybe<
-              Pick<StorefrontAPI.ArticleAuthor, 'name'>
-            >;
-            image?: StorefrontAPI.Maybe<
-              Pick<
-                StorefrontAPI.Image,
-                'id' | 'altText' | 'url' | 'width' | 'height'
-              >
-            >;
-          };
-        }>;
-      };
-    }
-  >;
-};
-
-export type ArticleFragment = Pick<
-  StorefrontAPI.Article,
-  'contentHtml' | 'handle' | 'id' | 'publishedAt' | 'title'
-> & {
-  author?: StorefrontAPI.Maybe<Pick<StorefrontAPI.ArticleAuthor, 'name'>>;
-  image?: StorefrontAPI.Maybe<
-    Pick<StorefrontAPI.Image, 'id' | 'altText' | 'url' | 'width' | 'height'>
-  >;
+  blog?: StorefrontAPI.Maybe<{
+    articles: {
+      edges: Array<{
+        node: Pick<
+          StorefrontAPI.Article,
+          'handle' | 'id' | 'title' | 'publishedAt'
+        > & {
+          image?: StorefrontAPI.Maybe<
+            Pick<StorefrontAPI.Image, 'url' | 'altText'>
+          >;
+        };
+      }>;
+    };
+  }>;
 };
 
 export type PageDetailsQueryVariables = StorefrontAPI.Exact<{
@@ -808,36 +783,6 @@ export type PageDetailsQuery = {
       >;
     }
   >;
-};
-
-export type PolicyHandleFragment = Pick<
-  StorefrontAPI.ShopPolicy,
-  'body' | 'handle' | 'id' | 'title' | 'url'
->;
-
-export type PoliciesHandleQueryVariables = StorefrontAPI.Exact<{
-  language?: StorefrontAPI.InputMaybe<StorefrontAPI.LanguageCode>;
-  privacyPolicy: StorefrontAPI.Scalars['Boolean']['input'];
-  shippingPolicy: StorefrontAPI.Scalars['Boolean']['input'];
-  termsOfService: StorefrontAPI.Scalars['Boolean']['input'];
-  refundPolicy: StorefrontAPI.Scalars['Boolean']['input'];
-}>;
-
-export type PoliciesHandleQuery = {
-  shop: {
-    privacyPolicy?: StorefrontAPI.Maybe<
-      Pick<StorefrontAPI.ShopPolicy, 'body' | 'handle' | 'id' | 'title' | 'url'>
-    >;
-    shippingPolicy?: StorefrontAPI.Maybe<
-      Pick<StorefrontAPI.ShopPolicy, 'body' | 'handle' | 'id' | 'title' | 'url'>
-    >;
-    termsOfService?: StorefrontAPI.Maybe<
-      Pick<StorefrontAPI.ShopPolicy, 'body' | 'handle' | 'id' | 'title' | 'url'>
-    >;
-    refundPolicy?: StorefrontAPI.Maybe<
-      Pick<StorefrontAPI.ShopPolicy, 'body' | 'handle' | 'id' | 'title' | 'url'>
-    >;
-  };
 };
 
 export type PolicyIndexFragment = Pick<
@@ -1407,21 +1352,17 @@ interface GeneratedQueryTypes {
     return: FeaturedItemsQuery;
     variables: FeaturedItemsQueryVariables;
   };
-  '#graphql\n  query ArticleDetails(\n    $language: LanguageCode\n    $blogHandle: String!\n    $articleHandle: String!\n  ) @inContext(language: $language) {\n    blog(handle: $blogHandle) {\n      articleByHandle(handle: $articleHandle) {\n        title\n        contentHtml\n        publishedAt\n        author: authorV2 {\n          name\n        }\n        image {\n          id\n          altText\n          url\n          width\n          height\n        }\n        seo {\n          description\n          title\n        }\n      }\n    }\n  }\n': {
+  '#graphql\n  query ArticleDetails(\n    $language: LanguageCode\n    $blogHandle: String!\n    $articleHandle: String!\n  ) @inContext(language: $language) {\n    blog(handle: $blogHandle) {\n      articleByHandle(handle: $articleHandle) {\n        title\n        contentHtml\n        publishedAt\n        author: authorV2 { name }\n        image { id altText url width height }\n      }\n    }\n  }\n': {
     return: ArticleDetailsQuery;
     variables: ArticleDetailsQueryVariables;
   };
-  '#graphql\nquery Blog(\n  $language: LanguageCode\n  $blogHandle: String!\n  $pageBy: Int!\n  $cursor: String\n) @inContext(language: $language) {\n  blog(handle: $blogHandle) {\n    title\n    seo {\n      title\n      description\n    }\n    articles(first: $pageBy, after: $cursor) {\n      edges {\n        node {\n          ...Article\n        }\n      }\n    }\n  }\n}\n\nfragment Article on Article {\n  author: authorV2 {\n    name\n  }\n  contentHtml\n  handle\n  id\n  image {\n    id\n    altText\n    url\n    width\n    height\n  }\n  publishedAt\n  title\n}\n': {
+  '#graphql\nquery Blog(\n  $language: LanguageCode\n  $blogHandle: String!\n  $pageBy: Int!\n) @inContext(language: $language) {\n  blog(handle: $blogHandle) {\n    articles(first: $pageBy) {\n      edges {\n        node {\n          handle\n          id\n          title\n          publishedAt\n          image { url altText }\n        }\n      }\n    }\n  }\n}\n': {
     return: BlogQuery;
     variables: BlogQueryVariables;
   };
   '#graphql\n  query PageDetails($language: LanguageCode, $handle: String!)\n  @inContext(language: $language) {\n    page(handle: $handle) {\n      id\n      title\n      body\n      seo {\n        description\n        title\n      }\n    }\n  }\n': {
     return: PageDetailsQuery;
     variables: PageDetailsQueryVariables;
-  };
-  '#graphql\n  fragment PolicyHandle on ShopPolicy {\n    body\n    handle\n    id\n    title\n    url\n  }\n\n  query PoliciesHandle(\n    $language: LanguageCode\n    $privacyPolicy: Boolean!\n    $shippingPolicy: Boolean!\n    $termsOfService: Boolean!\n    $refundPolicy: Boolean!\n  ) @inContext(language: $language) {\n    shop {\n      privacyPolicy @include(if: $privacyPolicy) {\n        ...PolicyHandle\n      }\n      shippingPolicy @include(if: $shippingPolicy) {\n        ...PolicyHandle\n      }\n      termsOfService @include(if: $termsOfService) {\n        ...PolicyHandle\n      }\n      refundPolicy @include(if: $refundPolicy) {\n        ...PolicyHandle\n      }\n    }\n  }\n': {
-    return: PoliciesHandleQuery;
-    variables: PoliciesHandleQueryVariables;
   };
   '#graphql\n  fragment PolicyIndex on ShopPolicy {\n    id\n    title\n    handle\n  }\n\n  query PoliciesIndex {\n    shop {\n      privacyPolicy {\n        ...PolicyIndex\n      }\n      shippingPolicy {\n        ...PolicyIndex\n      }\n      termsOfService {\n        ...PolicyIndex\n      }\n      refundPolicy {\n        ...PolicyIndex\n      }\n      subscriptionPolicy {\n        id\n        title\n        handle\n      }\n    }\n  }\n': {
     return: PoliciesIndexQuery;

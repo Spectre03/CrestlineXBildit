@@ -48,7 +48,7 @@ export function PageLayout({children, layout}: LayoutProps) {
           </a>
         </div>
         {headerMenu && layout?.shop.name && (
-          <Header title={layout.shop.name} menu={headerMenu} />
+          <Header title="Crestline Commerce" menu={headerMenu} />
         )}
         <main role="main" id="mainContent" className="flex-grow">
           {children}
@@ -149,22 +149,25 @@ function MenuMobileNav({
   return (
     <nav className="grid gap-4 p-6 sm:gap-6 sm:px-12 sm:py-8">
       {/* Top level menu items */}
-      {(menu?.items || []).map((item) => (
-        <span key={item.id} className="block">
-          <Link
-            to={item.to}
-            target={item.target}
-            onClick={onClose}
-            className={({isActive}) =>
-              isActive ? 'pb-1 border-b -mb-px' : 'pb-1'
-            }
-          >
-            <Text as="span" size="copy">
-              {item.title}
-            </Text>
-          </Link>
-        </span>
-      ))}
+      {(menu?.items || []).map((item) => {
+        const isNews = item.title.toLowerCase() === 'news';
+        return (
+          <span key={item.id} className="block">
+            <Link
+              to={isNews ? '/journal' : item.to}
+              target={item.target}
+              onClick={onClose}
+              className={({isActive}) =>
+                isActive ? 'pb-1 border-b -mb-px' : 'pb-1'
+              }
+            >
+              <Text as="span" size="copy">
+                {isNews ? 'Journal' : item.title}
+              </Text>
+            </Link>
+          </span>
+        );
+      })}
     </nav>
   );
 }
@@ -230,7 +233,7 @@ function MobileHeader({
         to="/"
       >
         <Heading
-          className="font-bold text-center leading-none"
+          className="font-serif font-bold text-center leading-none tracking-widest uppercase text-lg"
           as={isHome ? 'h1' : 'h2'}
         >
           {title}
@@ -263,31 +266,33 @@ function DesktopHeader({
       role="banner"
       className={`${
         isHome
-          ? 'bg-primary/80 dark:bg-contrast/60 text-contrast dark:text-primary shadow-darkHeader'
-          : 'bg-contrast/80 text-primary'
+          ? 'bg-primary/95 text-contrast shadow-darkHeader'
+          : 'bg-contrast/95 text-primary border-b border-primary/10'
       } ${
-        !isHome && y > 50 && ' shadow-lightHeader'
-      } hidden h-nav lg:flex items-center sticky transition duration-300 backdrop-blur-lg z-40 top-0 justify-between w-full leading-none gap-8 px-12 py-8`}
+        !isHome && y > 50 && 'shadow-lightHeader'
+      } hidden h-nav lg:flex items-center sticky transition-all duration-500 backdrop-blur-xl z-40 top-0 justify-between w-full leading-none gap-8 px-12 py-6`}
     >
-      <div className="flex gap-12">
-        <Link className="font-bold" to="/" prefetch="intent">
+      <div className="flex gap-16 items-center">
+        <Link className="font-serif font-bold tracking-widest text-xl uppercase" to="/" prefetch="intent">
           {title}
         </Link>
-        <nav className="flex gap-8">
-          {/* Top level menu items */}
-          {(menu?.items || []).map((item) => (
-            <Link
-              key={item.id}
-              to={item.to}
-              target={item.target}
-              prefetch="intent"
-              className={({isActive}) =>
-                isActive ? 'pb-1 border-b -mb-px' : 'pb-1'
-              }
-            >
-              {item.title}
-            </Link>
-          ))}
+        <nav className="flex gap-10">
+          {(menu?.items || []).map((item) => {
+            const isNews = item.title.toLowerCase() === 'news';
+            return (
+              <Link
+                key={item.id}
+                to={isNews ? '/journal' : item.to}
+                target={item.target}
+                prefetch="intent"
+                className={({isActive}) =>
+                  `text-sm uppercase tracking-widest font-medium transition-opacity duration-200 ${isActive ? 'opacity-100 border-b border-current pb-0.5' : 'opacity-70 hover:opacity-100'}`
+                }
+              >
+                {isNews ? 'Journal' : item.title}
+              </Link>
+            );
+          })}
         </nav>
       </div>
       <div className="flex items-center gap-1">
@@ -408,30 +413,100 @@ function Badge({
 }
 
 function Footer({menu}: {menu?: EnhancedMenu}) {
-  const isHome = useIsHomePath();
-  const itemsCount = menu
-    ? menu?.items?.length + 1 > 4
-      ? 4
-      : menu?.items?.length + 1
-    : [];
-
   return (
-    <Section
-      divider={isHome ? 'none' : 'top'}
-      as="footer"
-      role="contentinfo"
-      className={`grid min-h-[25rem] items-start grid-flow-row w-full gap-6 py-8 px-6 md:px-8 lg:px-12 md:gap-8 lg:gap-12 grid-cols-1 md:grid-cols-2 lg:grid-cols-${itemsCount}
-        bg-primary dark:bg-contrast dark:text-primary text-contrast overflow-hidden`}
-    >
-      <FooterMenu menu={menu} />
-      <CountrySelector />
-      <div
-        className={`self-end pt-8 opacity-50 md:col-span-2 lg:col-span-${itemsCount}`}
-      >
-        &copy; {new Date().getFullYear()} / Shopify, Inc. Hydrogen is an MIT
-        Licensed Open Source project.
+    <footer className="bg-primary text-contrast">
+      {/* Top footer grid */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-12 px-8 md:px-12 lg:px-16 py-16 border-b border-contrast/10">
+        {/* Brand column */}
+        <div className="md:col-span-1">
+          <Link to="/" className="font-serif text-xl font-bold tracking-widest uppercase block mb-4">
+            Crestline Commerce
+          </Link>
+          <p className="text-contrast/40 text-xs leading-relaxed mb-6 font-light">
+            Premium collections crafted for those who refuse to settle. Quality you can feel.
+          </p>
+          <div className="flex gap-4">
+            {['Instagram', 'Twitter', 'Pinterest'].map((s) => (
+              <a key={s} href="#" className="text-contrast/30 text-[10px] uppercase tracking-widest hover:text-contrast/80 transition-colors duration-300">{s}</a>
+            ))}
+          </div>
+        </div>
+
+        {/* Shop column */}
+        <div>
+          <h4 className="text-[10px] uppercase tracking-[0.3em] text-contrast/40 mb-6 font-medium">Shop</h4>
+          <ul className="space-y-3">
+            {[
+              {label: 'All Products', to: '/products'},
+              {label: 'Collections', to: '/collections'},
+              {label: 'New Arrivals', to: '/collections/all'},
+              {label: 'Sale', to: '/collections/all'},
+              {label: 'Gift Cards', to: '/products'},
+            ].map((item) => (
+              <li key={item.label}>
+                <Link to={item.to} className="text-contrast/50 text-xs tracking-wide hover:text-contrast transition-colors duration-300 font-light">
+                  {item.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Help column */}
+        <div>
+          <h4 className="text-[10px] uppercase tracking-[0.3em] text-contrast/40 mb-6 font-medium">Help</h4>
+          <ul className="space-y-3">
+            {[
+              {label: 'Privacy Policy', to: '/policies/privacy-policy'},
+              {label: 'Terms of Service', to: '/policies/terms-of-service'},
+              {label: 'Shipping Policy', to: '/policies/shipping-policy'},
+              {label: 'Refund Policy', to: '/policies/refund-policy'},
+              {label: 'Contact Us', to: '/'},
+            ].map((item) => (
+              <li key={item.label}>
+                <Link to={item.to} className="text-contrast/50 text-xs tracking-wide hover:text-contrast transition-colors duration-300 font-light">
+                  {item.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Newsletter column */}
+        <div>
+          <h4 className="text-[10px] uppercase tracking-[0.3em] text-contrast/40 mb-6 font-medium">Stay Updated</h4>
+          <p className="text-contrast/40 text-xs leading-relaxed mb-4 font-light">Subscribe for exclusive drops and member offers.</p>
+          <div className="flex flex-col gap-2">
+            <input
+              type="email"
+              placeholder="Email address"
+              className="bg-contrast/5 border border-contrast/10 px-4 py-3 text-xs text-contrast placeholder:text-contrast/25 focus:outline-none focus:border-contrast/40 transition-colors duration-300 tracking-wide"
+            />
+            <button className="bg-contrast text-primary px-4 py-3 text-[10px] uppercase tracking-[0.25em] font-semibold hover:bg-contrast/90 transition-colors duration-300">
+              Subscribe
+            </button>
+          </div>
+        </div>
       </div>
-    </Section>
+
+      {/* Bottom bar */}
+      <div className="flex flex-col md:flex-row items-center justify-between px-8 md:px-12 lg:px-16 py-6 gap-4">
+        <p className="text-contrast/25 text-[10px] tracking-widest uppercase">
+          &copy; {new Date().getFullYear()} Crestline Commerce. All Rights Reserved.
+        </p>
+        <div className="flex gap-6">
+          {[
+            {label: 'Privacy Policy', to: '/policies/privacy-policy'},
+            {label: 'Terms of Service', to: '/policies/terms-of-service'},
+            {label: 'Refund Policy', to: '/policies/refund-policy'},
+          ].map((item) => (
+            <Link key={item.label} to={item.to} className="text-contrast/25 text-[10px] uppercase tracking-widest hover:text-contrast/60 transition-colors duration-300">
+              {item.label}
+            </Link>
+          ))}
+        </div>
+      </div>
+    </footer>
   );
 }
 

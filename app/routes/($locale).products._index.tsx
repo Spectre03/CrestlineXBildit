@@ -72,36 +72,47 @@ export default function AllProducts() {
 
   return (
     <>
-      <PageHeader heading="All Products" variant="allCollections" />
-      <Section>
-        <Pagination connection={products}>
-          {({nodes, isLoading, NextLink, PreviousLink}) => {
-            const itemsMarkup = nodes.map((product, i) => (
-              <ProductCard
-                key={product.id}
-                product={product}
-                loading={getImageLoadingPriority(i)}
-              />
-            ));
+      {/* Premium hero banner */}
+      <div className="relative h-[40vh] flex items-end overflow-hidden bg-black -mt-nav">
+        <img
+          src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=1920&q=85"
+          alt="All Products"
+          className="absolute inset-0 w-full h-full object-cover opacity-60"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
+        <div className="relative z-10 px-8 md:px-16 pb-12">
+          <p className="text-white/50 text-[10px] uppercase tracking-[0.4em] mb-3">Everything</p>
+          <h1 className="font-serif text-white text-5xl md:text-6xl font-bold">All Products</h1>
+        </div>
+      </div>
 
-            return (
-              <>
-                <div className="flex items-center justify-center mt-6">
-                  <PreviousLink className="inline-block rounded font-medium text-center py-3 px-6 border border-primary/10 bg-contrast text-primary w-full">
-                    {isLoading ? 'Loading...' : 'Previous'}
-                  </PreviousLink>
-                </div>
-                <Grid data-test="product-grid">{itemsMarkup}</Grid>
-                <div className="flex items-center justify-center mt-6">
-                  <NextLink className="inline-block rounded font-medium text-center py-3 px-6 border border-primary/10 bg-contrast text-primary w-full">
-                    {isLoading ? 'Loading...' : 'Next'}
-                  </NextLink>
-                </div>
-              </>
-            );
-          }}
+      <div className="px-6 md:px-12 py-12">
+        <Pagination connection={products}>
+          {({nodes, isLoading, NextLink, PreviousLink}) => (
+            <>
+              <div className="flex items-center justify-center mb-8">
+                <PreviousLink className="inline-block font-medium text-center py-3 px-8 border border-primary/20 text-primary text-xs uppercase tracking-widest hover:bg-primary hover:text-contrast transition-colors duration-300">
+                  {isLoading ? 'Loading...' : 'Previous'}
+                </PreviousLink>
+              </div>
+              <Grid data-test="product-grid">
+                {nodes.map((product, i) => (
+                  <ProductCard
+                    key={product.id}
+                    product={product}
+                    loading={getImageLoadingPriority(i)}
+                  />
+                ))}
+              </Grid>
+              <div className="flex items-center justify-center mt-8">
+                <NextLink className="inline-block font-medium text-center py-3 px-8 border border-primary/20 text-primary text-xs uppercase tracking-widest hover:bg-primary hover:text-contrast transition-colors duration-300">
+                  {isLoading ? 'Loading...' : 'Load More'}
+                </NextLink>
+              </div>
+            </>
+          )}
         </Pagination>
-      </Section>
+      </div>
     </>
   );
 }

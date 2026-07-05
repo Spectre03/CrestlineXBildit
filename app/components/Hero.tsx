@@ -65,18 +65,22 @@ export function Hero({
             </div>
           )}
         </div>
-        <div className="flex flex-col items-baseline justify-between gap-4 px-6 py-8 sm:px-8 md:px-12 bg-gradient-to-t dark:from-contrast/60 dark:text-primary from-primary/60 text-contrast">
+        <div className="flex flex-col items-start justify-end gap-6 px-8 py-12 sm:px-12 md:px-16 bg-gradient-to-t from-black/70 via-black/20 to-transparent text-white">
           {heading?.value && (
-            <Heading format as="h2" size="display" className="max-w-md">
+            <Heading format as="h2" size="display" className="max-w-2xl font-serif font-bold leading-tight drop-shadow-lg">
               {heading.value}
             </Heading>
           )}
           {byline?.value && (
-            <Text format width="narrow" as="p" size="lead">
+            <Text format width="narrow" as="p" size="lead" className="text-white/80 max-w-md font-light tracking-wide">
               {byline.value}
             </Text>
           )}
-          {cta?.value && <Text size="lead">{cta.value}</Text>}
+          {cta?.value && (
+            <span className="inline-block mt-2 px-8 py-3 border border-white text-white text-sm uppercase tracking-widest font-medium hover:bg-white hover:text-black transition-all duration-300">
+              {cta.value}
+            </span>
+          )}
         </div>
       </section>
     </Link>
