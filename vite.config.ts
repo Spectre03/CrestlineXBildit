@@ -60,6 +60,7 @@ export default defineConfig({
     ],
   },
   build: {
+    sourcemap: false,
     // Allow a strict Content-Security-Policy
     // withtout inlining assets as base64:
     assetsInlineLimit: 0,
