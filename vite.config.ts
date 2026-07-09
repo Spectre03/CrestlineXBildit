@@ -21,8 +21,9 @@ export default defineConfig({
     tsconfigPaths(),
     {
       name: 'resolve-bildit-server-on-client',
+      enforce: 'pre',
       resolveId(source, importer, options) {
-        if (!options.ssr && source.includes('preview.server')) {
+        if (!options.ssr && source.includes('.server')) {
           return path.resolve(__dirname, './react-router-mock.js');
         }
       }
