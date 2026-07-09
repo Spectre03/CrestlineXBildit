@@ -1,4 +1,6 @@
 node_modules
+bildit hydrogen sdk/
+Partnership docs/
 /.DS_Store
 /.cache
 /build
