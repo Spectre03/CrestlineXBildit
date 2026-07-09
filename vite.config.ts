@@ -19,7 +19,7 @@ export default defineConfig({
       },
     }),
     tsconfigPaths(),
-    {
+    ...(process.env.VERCEL ? [{
       name: 'resolve-bildit-server-on-client',
       enforce: 'pre',
       resolveId(source, importer, options) {
@@ -27,7 +27,7 @@ export default defineConfig({
           return path.resolve(__dirname, './react-router-mock.js');
         }
       }
-    }
+    }] : [])
   ],
   resolve: {
     alias: {
