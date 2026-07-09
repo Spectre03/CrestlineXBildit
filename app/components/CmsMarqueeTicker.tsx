@@ -1,48 +1,14 @@
 import React from 'react';
 
-export default function CmsMarqueeTicker() {
-  /**
-   * @group Items
-   * @type String
-   */
-  const item1 = 'Free Shipping Over $150';
-
-  /**
-   * @group Items
-   * @type String
-   */
-  const item2 = 'New Arrivals Weekly';
-
-  /**
-   * @group Items
-   * @type String
-   */
-  const item3 = 'Premium Quality Guaranteed';
-
-  /**
-   * @group Items
-   * @type String
-   */
-  const item4 = 'Members Get 20% Off';
-
-  /**
-   * @group Items
-   * @type String
-   */
-  const item5 = 'Sustainable Materials';
-
-  /**
-   * @group Items
-   * @type String
-   */
-  const item6 = 'Free Returns · 30 Days';
-
-  /**
-   * @group Items
-   * @type String
-   */
-  const item7 = 'Exclusive Member Access';
-
+export default function CmsMarqueeTicker({
+  item1 = 'Free Shipping Over $150',
+  item2 = 'New Arrivals Weekly',
+  item3 = 'Premium Quality Guaranteed',
+  item4 = 'Members Get 20% Off',
+  item5 = 'Sustainable Materials',
+  item6 = 'Free Returns · 30 Days',
+  item7 = 'Exclusive Member Access',
+}: any) {
   const items = [item1, item2, item3, item4, item5, item6, item7];
 
   return (

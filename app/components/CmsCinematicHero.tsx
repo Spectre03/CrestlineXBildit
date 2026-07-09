@@ -1,68 +1,23 @@
 import React from 'react';
 
-export default function CmsCinematicHero() {
-  /**
-   * @group Content
-   * @type String
-   */
-  const subtitle = 'Crestline Commerce · Est. 2024';
-
-  /**
-   * @group Content
-   * @type String
-   */
-  const title = 'Define Your Standard.';
-
-  /**
-   * @group Content
-   * @type String
-   */
-  const description = 'Premium collections for those who refuse to settle. Crafted for the exceptional.';
-
-  /**
-   * @group Content
-   * @type Image
-   */
-  const imageUrl = {
-    src: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1920&q=90',
-  };
-
-  /**
-   * @group Buttons
-   * @type String
-   */
-  const primaryButtonText = 'Shop Collection';
-
-  /**
-   * @group Buttons
-   * @type String
-   */
-  const primaryButtonUrl = '/collections/all';
-
-  /**
-   * @group Buttons
-   * @type String
-   */
-  const secondaryButtonText = 'Explore All';
-
-  /**
-   * @group Buttons
-   * @type String
-   */
-  const secondaryButtonUrl = '/products';
-
-  /**
-   * @group Bottom Scroll
-   * @type RichText
-   */
-  const scrollText = {
-    text: 'Scroll',
-  };
+export default function CmsCinematicHero({
+  subtitle = 'Crestline Commerce · Est. 2024',
+  title = 'Define Your Standard.',
+  description = 'Premium collections for those who refuse to settle. Crafted for the exceptional.',
+  imageUrl = { url: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1920&q=90', src: '' },
+  primaryButtonText = 'Shop Collection',
+  primaryButtonUrl = '/collections/all',
+  secondaryButtonText = 'Explore All',
+  secondaryButtonUrl = '/products',
+  scrollText = { text: 'Scroll' },
+}: any) {
+  const displayImage = imageUrl?.url || imageUrl?.src || '';
+  const displayText = scrollText?.text || 'Scroll';
 
   return (
     <div className="relative -mt-nav h-screen flex items-end overflow-hidden bg-black w-full">
       <img
-        src={imageUrl.src}
+        src={displayImage}
         alt="Hero"
         className="absolute inset-0 w-full h-full object-cover object-center animate-scale-in"
         style={{animation: 'scaleIn 8s ease-out forwards'}}
@@ -100,7 +55,7 @@ export default function CmsCinematicHero() {
       </div>
       <div className="absolute bottom-8 right-12 flex flex-col items-center gap-2 opacity-50">
         <span className="text-white text-[9px] uppercase tracking-[0.3em] rotate-90 mb-4">
-          {scrollText.text}
+          {displayText}
         </span>
         <div className="w-px h-12 bg-white/40" />
       </div>

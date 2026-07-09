@@ -1,75 +1,25 @@
 import React from 'react';
 
-export default function CmsSplitBanner() {
-  /**
-   * @group Left Banner
-   * @type Image
-   */
-  const leftImageUrl = {
-    src: 'https://images.unsplash.com/photo-1483985988355-763728e1935b?w=900&q=80',
-  };
-
-  /**
-   * @group Left Banner
-   * @type String
-   */
-  const leftSubtitle = 'Women';
-
-  /**
-   * @group Left Banner
-   * @type String
-   */
-  const leftTitle = 'New Season\nArrivals';
-
-  /**
-   * @group Left Banner
-   * @type String
-   */
-  const leftButtonText = 'Shop Women';
-
-  /**
-   * @group Left Banner
-   * @type String
-   */
-  const leftButtonUrl = '/collections/all';
-
-  /**
-   * @group Right Banner
-   * @type Image
-   */
-  const rightImageUrl = {
-    src: 'https://images.unsplash.com/photo-1490114538077-0a7f8cb49891?w=900&q=80',
-  };
-
-  /**
-   * @group Right Banner
-   * @type String
-   */
-  const rightSubtitle = 'Men';
-
-  /**
-   * @group Right Banner
-   * @type String
-   */
-  const rightTitle = 'Essential\nCollection';
-
-  /**
-   * @group Right Banner
-   * @type String
-   */
-  const rightButtonText = 'Shop Men';
-
-  /**
-   * @group Right Banner
-   * @type String
-   */
-  const rightButtonUrl = '/collections/all';
+export default function CmsSplitBanner({
+  leftImageUrl = { url: 'https://images.unsplash.com/photo-1483985988355-763728e1935b?w=900&q=80', src: '' },
+  leftSubtitle = 'Women',
+  leftTitle = 'New Season\nArrivals',
+  leftButtonText = 'Shop Women',
+  leftButtonUrl = '/collections/all',
+  rightImageUrl = { url: 'https://images.unsplash.com/photo-1490114538077-0a7f8cb49891?w=900&q=80', src: '' },
+  rightSubtitle = 'Men',
+  rightTitle = 'Essential\nCollection',
+  rightButtonText = 'Shop Men',
+  rightButtonUrl = '/collections/all',
+}: any) {
+  const leftImg = leftImageUrl?.url || leftImageUrl?.src || '';
+  const rightImg = rightImageUrl?.url || rightImageUrl?.src || '';
 
   return (
     <div className="grid md:grid-cols-2 gap-0 my-4 mx-4 md:mx-8">
       <div className="relative h-[60vh] overflow-hidden group">
         <img
-          src={leftImageUrl.src}
+          src={leftImg}
           alt={leftSubtitle}
           className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
         />
@@ -87,7 +37,7 @@ export default function CmsSplitBanner() {
       </div>
       <div className="relative h-[60vh] overflow-hidden group">
         <img
-          src={rightImageUrl.src}
+          src={rightImg}
           alt={rightSubtitle}
           className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
         />

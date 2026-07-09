@@ -1,48 +1,19 @@
 import React from 'react';
 
-export default function CmsFullWidthFeature() {
-  /**
-   * @group Content
-   * @type String
-   */
-  const subtitle = 'Limited Edition';
-
-  /**
-   * @group Content
-   * @type String
-   */
-  const title = 'The Signature\nCollection';
-
-  /**
-   * @group Content
-   * @type String
-   */
-  const description = 'Timeless pieces designed to last a lifetime. Each item tells a story of craftsmanship.';
-
-  /**
-   * @group Content
-   * @type Image
-   */
-  const imageUrl = {
-    src: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1920&q=85',
-  };
-
-  /**
-   * @group Button
-   * @type String
-   */
-  const buttonText = 'Discover Now';
-
-  /**
-   * @group Button
-   * @type String
-   */
-  const buttonUrl = '/collections/all';
+export default function CmsFullWidthFeature({
+  subtitle = 'Limited Edition',
+  title = 'The Signature\nCollection',
+  description = 'Timeless pieces designed to last a lifetime. Each item tells a story of craftsmanship.',
+  imageUrl = { url: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1920&q=85', src: '' },
+  buttonText = 'Discover Now',
+  buttonUrl = '/collections/all',
+}: any) {
+  const displayImage = imageUrl?.url || imageUrl?.src || '';
 
   return (
     <div className="relative h-[70vh] overflow-hidden my-4 mx-4 md:mx-8 group">
       <img
-        src={imageUrl.src}
+        src={displayImage}
         alt={subtitle}
         className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
       />
