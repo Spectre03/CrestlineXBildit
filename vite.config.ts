@@ -22,25 +22,25 @@ export default defineConfig({
     // Fix: BILDIT SDK imports preview.server.js in the client bundle.
     // Vite enforces strict server/client boundaries — this resolver intercepts
     // .server imports on the client side and redirects them to a lightweight mock.
+    // It also redirects exact 'react-router' imports to inject useSearchParams.
     // Works on any hosting platform (Oxygen, Vercel, local builds).
     {
       name: 'resolve-bildit-server-on-client',
       enforce: 'pre',
       resolveId(source, importer, options) {
+        if (source === 'react-router') {
+          return path.resolve(__dirname, './react-router-mock.js');
+        }
         if (!options.ssr && source.includes('.server')) {
           return path.resolve(__dirname, './react-router-mock.js');
         }
       }
     },
   ],
-  resolve: {
-    alias: {
-      'react-router': path.resolve(__dirname, './react-router-mock.js'),
-    },
-  },
   ssr: {
     noExternal: [/@bildit-platform/, 'react-is'],
     optimizeDeps: {
+      exclude: ['react-router'],
       include: [
         'typographic-base',
         'react-is',
@@ -50,6 +50,7 @@ export default defineConfig({
     },
   },
   optimizeDeps: {
+    exclude: ['react-router'],
     include: [
       'clsx',
       '@headlessui/react',
