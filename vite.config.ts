@@ -29,10 +29,18 @@ export default defineConfig({
       enforce: 'pre',
       resolveId(source, importer, options) {
         if (source === 'react-router') {
-          return path.resolve(__dirname, './react-router-mock.js');
+          return '\0react-router-mock';
         }
         if (!options.ssr && source.includes('.server')) {
-          return path.resolve(__dirname, './react-router-mock.js');
+          return '\0react-router-mock';
+        }
+      },
+      load(id) {
+        if (id === '\0react-router-mock') {
+          return `
+            export * from 'react-router/dist/index.js';
+            export { useSearchParams } from 'react-router-dom';
+          `;
         }
       }
     },
