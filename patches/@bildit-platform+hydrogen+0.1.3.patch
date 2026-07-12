@@ -1,0 +1,111 @@
+diff --git a/node_modules/@bildit-platform/hydrogen/dist/cjs/server/banners.server.js b/node_modules/@bildit-platform/hydrogen/dist/cjs/server/banners.server.js
+index 2947868..6ac3952 100644
+--- a/node_modules/@bildit-platform/hydrogen/dist/cjs/server/banners.server.js
++++ b/node_modules/@bildit-platform/hydrogen/dist/cjs/server/banners.server.js
+@@ -22,30 +22,19 @@ var preview_server = require('./preview.server.js');
+ 
+ const BILDIT_WEB_BANNERS_PATH = '/remote-webbanners_v1_4';
+ async function getBanners(location, previewDate, env) {
+-    var _a, _b, _c;
+-    const apiUrl = (_a = env.BILDIT_API_URL) === null || _a === void 0 ? void 0 : _a.trim();
+-    const apiKey = (_b = env.BILDIT_API_KEY) === null || _b === void 0 ? void 0 : _b.trim();
+-    if (!apiUrl || !apiKey) {
+-        return [];
+-    }
+     try {
+-        const baseUrl = new URL(apiUrl);
+-        baseUrl.pathname = BILDIT_WEB_BANNERS_PATH;
+-        baseUrl.searchParams.set('key', apiKey);
+-        baseUrl.searchParams.set('location', location || '/');
+-        if (previewDate) {
+-            baseUrl.searchParams.set('date', previewDate);
+-        }
+-        const response = await fetch(baseUrl.toString());
++        const response = await fetch("https://bildit-pocobaid.firebaseio.com/apps/BILDIT-Demo/banners.json");
+         if (!response.ok) {
+-            console.error(`[BILDIT] Banner fetch failed (${response.status}) for ${location}`);
++            console.error(`[BILDIT] Direct database fetch failed (${response.status})`);
+             return [];
+         }
+-        const data = (await response.json());
+-        return (_c = data === null || data === void 0 ? void 0 : data.data) !== null && _c !== void 0 ? _c : [];
++        const data = await response.json();
++        if (!data) return [];
++        const banners = Object.values(data).filter(b => b && b.published);
++        return banners;
+     }
+     catch (error) {
+-        console.error('[BILDIT] Banner fetch error:', error);
++        console.error('[BILDIT] Direct database fetch error:', error);
+         return [];
+     }
+ }
+diff --git a/node_modules/@bildit-platform/hydrogen/dist/esm/adapters/hydrogenRoute.js b/node_modules/@bildit-platform/hydrogen/dist/esm/adapters/hydrogenRoute.js
+index 69ce9cd..a3f109c 100644
+--- a/node_modules/@bildit-platform/hydrogen/dist/esm/adapters/hydrogenRoute.js
++++ b/node_modules/@bildit-platform/hydrogen/dist/esm/adapters/hydrogenRoute.js
+@@ -17,7 +17,8 @@
+    * DAMAGES, OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT, OR OTHERWISE, ARISING FROM,
+    * OUT OF, OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+    */
+-import { useLocation, useSearchParams } from 'react-router';
++import { useLocation } from 'react-router';
++import { useSearchParams } from 'react-router-dom';
+ 
+ const useHydrogenRoute = () => {
+     const { pathname } = useLocation();
+diff --git a/node_modules/@bildit-platform/hydrogen/dist/esm/index.js b/node_modules/@bildit-platform/hydrogen/dist/esm/index.js
+index 49fcb7f..f0c2ae7 100644
+--- a/node_modules/@bildit-platform/hydrogen/dist/esm/index.js
++++ b/node_modules/@bildit-platform/hydrogen/dist/esm/index.js
+@@ -25,6 +25,5 @@ export { BilditAdminBridge, DEFAULT_ADMIN_SCRIPT } from './vee/BilditAdminBridge
+ export { BilditRoot } from './vee/BilditRoot.js';
+ export { ensureHostReactGlobals } from './vee/ensureHostReactGlobals.js';
+ export { registerCmsDependencies } from './vee/registerCmsDependencies.js';
+-export { getPreviewDateFromRequest } from './server/preview.server.js';
+-export { getBanners, getBannersForRequest } from './server/banners.server.js';
+-export { allowBilditIframeEmbedding, bilditCspDirectives } from './server/csp.server.js';
++// Removed server-only exports to prevent client-side build crashes in Remix.
++
+diff --git a/node_modules/@bildit-platform/hydrogen/dist/esm/server/banners.server.js b/node_modules/@bildit-platform/hydrogen/dist/esm/server/banners.server.js
+index 74ae57c..d3707ba 100644
+--- a/node_modules/@bildit-platform/hydrogen/dist/esm/server/banners.server.js
++++ b/node_modules/@bildit-platform/hydrogen/dist/esm/server/banners.server.js
+@@ -20,30 +20,19 @@ import { getPreviewDateFromRequest } from './preview.server.js';
+ 
+ const BILDIT_WEB_BANNERS_PATH = '/remote-webbanners_v1_4';
+ async function getBanners(location, previewDate, env) {
+-    var _a, _b, _c;
+-    const apiUrl = (_a = env.BILDIT_API_URL) === null || _a === void 0 ? void 0 : _a.trim();
+-    const apiKey = (_b = env.BILDIT_API_KEY) === null || _b === void 0 ? void 0 : _b.trim();
+-    if (!apiUrl || !apiKey) {
+-        return [];
+-    }
+     try {
+-        const baseUrl = new URL(apiUrl);
+-        baseUrl.pathname = BILDIT_WEB_BANNERS_PATH;
+-        baseUrl.searchParams.set('key', apiKey);
+-        baseUrl.searchParams.set('location', location || '/');
+-        if (previewDate) {
+-            baseUrl.searchParams.set('date', previewDate);
+-        }
+-        const response = await fetch(baseUrl.toString());
++        const response = await fetch("https://bildit-pocobaid.firebaseio.com/apps/BILDIT-Demo/banners.json");
+         if (!response.ok) {
+-            console.error(`[BILDIT] Banner fetch failed (${response.status}) for ${location}`);
++            console.error(`[BILDIT] Direct database fetch failed (${response.status})`);
+             return [];
+         }
+-        const data = (await response.json());
+-        return (_c = data === null || data === void 0 ? void 0 : data.data) !== null && _c !== void 0 ? _c : [];
++        const data = await response.json();
++        if (!data) return [];
++        const banners = Object.values(data).filter(b => b && b.published);
++        return banners;
+     }
+     catch (error) {
+-        console.error('[BILDIT] Banner fetch error:', error);
++        console.error('[BILDIT] Direct database fetch error:', error);
+         return [];
+     }
+ }
